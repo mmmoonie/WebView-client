@@ -2,15 +2,13 @@ package xyz.supermoonie;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import xyz.supermoonie.command.CaptchaCommand;
-import xyz.supermoonie.command.ExecToRedirectCommand;
-import xyz.supermoonie.command.GetCookieCommand;
-import xyz.supermoonie.command.LoadCommand;
+import xyz.supermoonie.command.*;
 import xyz.supermoonie.controller.WebViewController;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.Base64;
 
 /**
@@ -26,6 +24,12 @@ public class App {
             LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
             String loadData = controller.sendCommand(loadCommand);
             System.out.println(loadData);
+
+//            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("127.0.0.1", 8888));
+//            LoadWithProxyCommand loadWithProxyCommand = new LoadWithProxyCommand("https://persons.shgjj.com", proxy);
+//            String loadData = controller.sendCommand(loadWithProxyCommand);
+//            System.out.println(loadData);
+
             String cookieData = controller.sendCommand(new GetCookieCommand());
             System.out.println(cookieData);
             CaptchaCommand captchaCommand = new CaptchaCommand("img[src=VerifyImageServlet]");

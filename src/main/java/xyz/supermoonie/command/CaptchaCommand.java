@@ -22,4 +22,8 @@ public class CaptchaCommand extends AbstractCommand {
         json.put("selector", selector);
         return json.toJSONString();
     }
+
+    public String getSelector() {
+        return selector;
+    }
 }

@@ -9,6 +9,8 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class LoadCommand extends AbstractCommand {
 
+    public static final String IMAGE_INTERCEPTOR = ".*(png|gif|jpg).*";
+
     private String url;
     private String interceptor;
 
@@ -28,5 +30,13 @@ public class LoadCommand extends AbstractCommand {
         json.put("url", url);
         json.put("interceptor", interceptor);
         return json.toJSONString();
+    }
+
+    public String getInterceptor() {
+        return interceptor;
+    }
+
+    public String getUrl() {
+        return url;
     }
 }

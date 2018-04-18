@@ -22,4 +22,8 @@ public class ExecToRedirectCommand extends AbstractCommand {
         json.put("js", javaScript);
         return json.toJSONString();
     }
+
+    public String getJavaScript() {
+        return javaScript;
+    }
 }

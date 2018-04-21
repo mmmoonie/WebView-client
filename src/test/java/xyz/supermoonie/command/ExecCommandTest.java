@@ -22,11 +22,11 @@ public class ExecCommandTest {
             String loadData = controller.sendCommand(loadCommand);
             System.out.println(loadData);
 
-            ExecCommand execCommand = new ExecCommand("document.abc.abc");
+            ExecCommand execCommand = new ExecCommand("document.getElementsByTagName('html')[0].innerHTML.replace(/\\s/g, ' ')");
             String execData = controller.sendCommand(execCommand);
             System.out.println(execData);
 
-            Thread.sleep(10000);
+            Thread.sleep(15000);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {

@@ -13,6 +13,8 @@ import java.net.SocketAddress;
  */
 public class WebViewController implements Closeable{
 
+    private static final String BOUNDARY = "boundary-----------";
+
     private Socket socket;
     private PrintWriter writer;
     private BufferedReader reader;
@@ -32,11 +34,10 @@ public class WebViewController implements Closeable{
     public String sendCommand(AbstractCommand command) throws IOException {
         writer.write(command.generate());
         writer.flush();
-        StringBuilder stringBuilder = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder("");
         String info;
-        String blank = "";
         while ((info = reader.readLine()) != null) {
-            if (info.trim().equals(blank)) {
+            if (info.trim().equals(BOUNDARY)) {
                 break;
             }
             stringBuilder.append(info);

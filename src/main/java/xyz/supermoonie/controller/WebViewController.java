@@ -32,7 +32,8 @@ public class WebViewController implements Closeable{
     }
 
     public String sendCommand(AbstractCommand command) throws IOException {
-        writer.write(command.generate());
+        String cmd = command.generate();
+        writer.write(cmd + BOUNDARY);
         writer.flush();
         StringBuilder stringBuilder = new StringBuilder("");
         String info;

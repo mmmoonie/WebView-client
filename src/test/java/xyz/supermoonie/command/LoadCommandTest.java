@@ -22,7 +22,7 @@ public class LoadCommandTest {
             System.out.println(loadCommand.generate());
             String loadData = controller.sendCommand(loadCommand);
             System.out.println(loadData);
-            Thread.sleep(10000);
+            Thread.sleep(1000);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {

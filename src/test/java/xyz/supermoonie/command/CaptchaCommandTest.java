@@ -46,15 +46,11 @@ public class CaptchaCommandTest {
 
     @Test
     public void test() throws InterruptedException {
-        new Thread(() -> {
-            new CaptchaCommandTest().captcha();
-        }).start();
-        new Thread(() -> {
-            new CaptchaCommandTest().captcha();
-        }).start();
-        new Thread(() -> {
-            new CaptchaCommandTest().captcha();
-        }).start();
+        CaptchaCommandTest test = new CaptchaCommandTest();
+        new Thread(test::captcha).start();
+        new Thread(test::captcha).start();
+        new Thread(test::captcha).start();
+        new Thread(test::captcha).start();
         Thread.sleep(Integer.MAX_VALUE);
     }
 

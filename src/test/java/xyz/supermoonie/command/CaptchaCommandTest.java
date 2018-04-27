@@ -15,16 +15,16 @@ public class CaptchaCommandTest {
 
     @Test
     public void captcha() {
-        for (int i = 0; i < 1000; i ++) {
+        for (int i = 0; i < 1; i ++) {
             WebViewController controller = null;
             try {
                 controller = new WebViewController(new InetSocketAddress("127.0.0.1", 7100));
 
-                LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
+                LoadCommand loadCommand = new LoadCommand("https://juejin.im/entry/5ae2c177f265da0b722ad90b");
                 String loadData = controller.sendCommand(loadCommand);
                 System.out.println(loadData);
 
-                CaptchaCommand captchaCommand = new CaptchaCommand("img[src=VerifyImageServlet]");
+                CaptchaCommand captchaCommand = new CaptchaCommand("body");
                 String captchaData = controller.sendCommand(captchaCommand);
                 System.out.println(captchaData);
 

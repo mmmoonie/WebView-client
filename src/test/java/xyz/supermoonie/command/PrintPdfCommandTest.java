@@ -8,12 +8,12 @@ import java.net.InetSocketAddress;
 
 /**
  *
- * Created by wangchao on 2018/4/19.
+ * Created by Administrator on 2018/4/27 0027.
  */
-public class ExecCommandTest {
+public class PrintPdfCommandTest {
 
     @Test
-    public void exec() {
+    public void printPdf() {
         WebViewController controller = null;
         try {
             controller = new WebViewController(new InetSocketAddress("127.0.0.1", 7100));
@@ -21,12 +21,17 @@ public class ExecCommandTest {
             System.out.println(loadCommand.generate());
             String loadData = controller.sendCommand(loadCommand);
             System.out.println(loadData);
+//            Thread.sleep(5000);
 
-            ExecCommand execCommand = new ExecCommand("document.getElementsByTagName('html')[0].innerHTML.replace(/\\s/g, ' ')");
-            String execData = controller.sendCommand(execCommand);
-            System.out.println(execData);
+            ExecCommand hrefCommand = new ExecCommand("location.href");
+            String href = controller.sendCommand(hrefCommand);
+            System.out.println(href);
 
-            Thread.sleep(15000);
+            PrintPdfCommand printPdfCommand = new PrintPdfCommand();
+            String printPdfData = controller.sendCommand(printPdfCommand);
+            System.out.println(printPdfData);
+
+            Thread.sleep(1000);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -39,5 +44,4 @@ public class ExecCommandTest {
             }
         }
     }
-
 }

@@ -31,10 +31,7 @@ public class WebViewController implements Closeable{
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), "UTF-8"));
     }
 
-    public String sendCommand(AbstractCommand command) throws IOException {
-        String cmd = command.generate();
-        writer.write(cmd + BOUNDARY);
-        writer.flush();
+    public String read() throws IOException {
         StringBuilder stringBuilder = new StringBuilder("");
         String info;
         while ((info = reader.readLine()) != null) {
@@ -44,6 +41,13 @@ public class WebViewController implements Closeable{
             stringBuilder.append(info);
         }
         return stringBuilder.toString();
+    }
+
+    public String sendCommand(AbstractCommand command) throws IOException {
+        String cmd = command.generate();
+        writer.write(cmd + BOUNDARY);
+        writer.flush();
+        return read();
     }
 
     @Override

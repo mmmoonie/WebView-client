@@ -1,5 +1,7 @@
 package xyz.supermoonie.command;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import xyz.supermoonie.controller.WebViewController;
 
@@ -21,17 +23,26 @@ public class PrintPdfCommandTest {
             System.out.println(loadCommand.generate());
             String loadData = controller.sendCommand(loadCommand);
             System.out.println(loadData);
-//            Thread.sleep(5000);
 
-            ExecCommand hrefCommand = new ExecCommand("location.href");
-            String href = controller.sendCommand(hrefCommand);
-            System.out.println(href);
+            ExecCommand loadImgCommand = new ExecCommand("" +
+                    "var imgArr = document.querySelector('article').getElementsByTagName('img');" +
+                    "for(var i = 0; i < imgArr.length; i ++) {" +
+                    "var src = imgArr[i].dataset.src;" +
+                    "var height = imgArr[i].dataset.hight;" +
+                    "var width = imgArr[i].dataset.widht;" +
+                    "imgArr[i].src = src;" +
+                    "imgArr[i].width = width;" +
+                    "imgArr[i].height = height;" +
+                    "}");
+            String loadImgData = controller.sendCommand(loadImgCommand);
+            System.out.println(loadImgData);
 
+            Thread.sleep(5000);
             PrintPdfCommand printPdfCommand = new PrintPdfCommand();
             String printPdfData = controller.sendCommand(printPdfCommand);
             System.out.println(printPdfData);
 
-            Thread.sleep(1000);
+            Thread.sleep(5000);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {

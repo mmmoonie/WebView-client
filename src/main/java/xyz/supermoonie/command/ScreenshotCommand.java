@@ -7,18 +7,18 @@ import com.alibaba.fastjson.JSONObject;
  * @author Administrator
  * @date 2018/4/18 0018
  */
-public class CaptchaCommand extends AbstractCommand {
+public class ScreenshotCommand extends AbstractCommand {
 
     private String selector;
 
-    public CaptchaCommand(String selector) {
+    public ScreenshotCommand(String selector) {
         this.selector = selector;
     }
 
     @Override
     public String generate() {
         JSONObject json = new JSONObject();
-        json.put("op", "captcha");
+        json.put("op", "screenshot");
         json.put("selector", selector);
         return json.toJSONString();
     }

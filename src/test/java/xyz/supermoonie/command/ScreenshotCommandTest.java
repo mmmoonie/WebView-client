@@ -11,7 +11,7 @@ import java.util.Random;
  *
  * Created by wangchao on 2018/4/19.
  */
-public class CaptchaCommandTest {
+public class ScreenshotCommandTest {
 
     @Test
     public void captcha() {
@@ -24,8 +24,8 @@ public class CaptchaCommandTest {
                 String loadData = controller.sendCommand(loadCommand);
                 System.out.println(loadData);
 
-                CaptchaCommand captchaCommand = new CaptchaCommand("body");
-                String captchaData = controller.sendCommand(captchaCommand);
+                ScreenshotCommand screenshotCommand = new ScreenshotCommand("body");
+                String captchaData = controller.sendCommand(screenshotCommand);
                 System.out.println(captchaData);
 
                 Thread.sleep(1000);
@@ -46,7 +46,7 @@ public class CaptchaCommandTest {
 
     @Test
     public void test() throws InterruptedException {
-        CaptchaCommandTest test = new CaptchaCommandTest();
+        ScreenshotCommandTest test = new ScreenshotCommandTest();
         new Thread(test::captcha).start();
         new Thread(test::captcha).start();
         new Thread(test::captcha).start();

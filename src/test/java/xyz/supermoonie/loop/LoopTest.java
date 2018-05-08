@@ -1,31 +1,28 @@
-package xyz.supermoonie.command;
+package xyz.supermoonie.loop;
 
+import xyz.supermoonie.command.LoadCommand;
 import xyz.supermoonie.controller.WebViewDriver;
 import org.junit.Test;
+import xyz.supermoonie.expection.ExpectedConditions;
+import xyz.supermoonie.wait.Wait;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
 /**
- * @author moonie
- * @date 2018/4/30
+ *
+ * Created by wangchao on 2018/5/7.
  */
-public class ProgressCommandTest {
-
+public class LoopTest {
     @Test
-    public void progress() {
+    public void begin() throws Exception {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
-            System.out.println(loadCommand.generate());
-            String loadData = driver.sendCommand(loadCommand);
-            System.out.println(loadData);
 
-            ProgressCommand progressCommand = new ProgressCommand();
-            System.out.println(progressCommand.generate());
-            String progressData = driver.sendCommand(progressCommand);
-            System.out.println(progressData);
+            Boolean loaded = new Loop(driver, new Wait(driver)).begin(loadCommand, ExpectedConditions.loadFinished());
+            System.out.println(loaded);
 
             Thread.sleep(1000);
         } catch (IOException | InterruptedException e) {

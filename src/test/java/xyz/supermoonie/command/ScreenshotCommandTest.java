@@ -1,7 +1,7 @@
 package xyz.supermoonie.command;
 
+import xyz.supermoonie.controller.WebViewDriver;
 import org.junit.Test;
-import xyz.supermoonie.controller.WebViewController;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -16,16 +16,16 @@ public class ScreenshotCommandTest {
     @Test
     public void captcha() {
         for (int i = 0; i < 1; i ++) {
-            WebViewController controller = null;
+            WebViewDriver driver = null;
             try {
-                controller = new WebViewController(new InetSocketAddress("127.0.0.1", 7100));
+                driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
 
                 LoadCommand loadCommand = new LoadCommand("https://juejin.im/entry/5ae2c177f265da0b722ad90b");
-                String loadData = controller.sendCommand(loadCommand);
+                String loadData = driver.sendCommand(loadCommand);
                 System.out.println(loadData);
 
                 ScreenshotCommand screenshotCommand = new ScreenshotCommand("body");
-                String captchaData = controller.sendCommand(screenshotCommand);
+                String captchaData = driver.sendCommand(screenshotCommand);
                 System.out.println(captchaData);
 
                 Thread.sleep(1000);
@@ -33,8 +33,8 @@ public class ScreenshotCommandTest {
                 e.printStackTrace();
             } finally {
                 try {
-                    if (controller != null) {
-                        controller.close();
+                    if (driver != null) {
+                        driver.close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

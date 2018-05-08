@@ -1,6 +1,9 @@
 package xyz.supermoonie.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import xyz.supermoonie.command.AbstractCommand;
+import xyz.supermoonie.exception.WebViewClientException;
 
 import java.io.*;
 import java.net.Socket;
@@ -11,19 +14,22 @@ import java.net.SocketAddress;
  * @author Administrator
  * @date 2018/4/18 0018
  */
-public class WebViewController implements Closeable{
+public class WebViewDriver implements Closeable{
 
     private static final String BOUNDARY = "boundary-----------";
+    private static final String CODE_KEY = "code";
+    private static final String DATA_KEY = "data";
+    private static final int OK_CODE = 200;
 
     private Socket socket;
     private PrintWriter writer;
     private BufferedReader reader;
 
-    public WebViewController(SocketAddress socketAddress) throws IOException {
+    public WebViewDriver(SocketAddress socketAddress) throws IOException {
         this(socketAddress, 10000, 10000);
     }
 
-    public WebViewController(SocketAddress socketAddress, int connectTimeOut, int soTimeOut) throws IOException {
+    public WebViewDriver(SocketAddress socketAddress, int connectTimeOut, int soTimeOut) throws IOException {
         socket = new Socket();
         socket.connect(socketAddress, connectTimeOut);
         socket.setSoTimeout(soTimeOut);
@@ -43,11 +49,25 @@ public class WebViewController implements Closeable{
         return stringBuilder.toString();
     }
 
-    public String sendCommand(AbstractCommand command) throws IOException {
+    public void write(AbstractCommand command) throws IOException {
         String cmd = command.generate();
         writer.write(cmd + BOUNDARY);
         writer.flush();
-        return read();
+    }
+
+    public String sendCommand(AbstractCommand command) throws WebViewClientException, IOException {
+        write(command);
+        String result = read();
+        try {
+            JSONObject json = JSON.parseObject(result);
+            if (json.containsKey(CODE_KEY) && json.getIntValue(CODE_KEY) == OK_CODE) {
+                return json.getString(DATA_KEY);
+            } else {
+                throw new WebViewClientException("code is not 200, " + result);
+            }
+        } catch (Exception e) {
+            throw new WebViewClientException(e.getMessage() + " , result: " + result);
+        }
     }
 
     @Override

@@ -1,11 +1,8 @@
 package xyz.supermoonie.expection;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
-import xyz.supermoonie.command.ExecCommand;
+import com.alibaba.fastjson.JSONArray;
+import xyz.supermoonie.command.GetCookieCommand;
 import xyz.supermoonie.command.ProgressCommand;
-
-import java.io.IOException;
 
 /**
  * @author moonie
@@ -13,33 +10,29 @@ import java.io.IOException;
  */
 public class ExpectedConditions {
 
-    private static final String CODE_KEY = "code";
-    private static final String DATA_KEY = "data";
-    private static final int OK_CODE = 200;
     private static final int COMPLETE = 100;
 
     private ExpectedConditions() {
     }
 
     public static ExpectedCondition<Boolean> loadFinished() {
-        ProgressCommand progressCommand = new ProgressCommand();
         return driver -> {
-            try {
-                String data = driver.sendCommand(progressCommand);
-                System.out.println(data);
-                JSONObject json = JSON.parseObject(data);
-                if (OK_CODE == json.getIntValue(CODE_KEY)) {
-                    if (COMPLETE == json.getIntValue(DATA_KEY)) {
-                        return Boolean.TRUE;
-                    } else {
-                        return null;
-                    }
-                } else {
-                    return null;
-                }
-            } catch (IOException ignore) {
+            String progress = driver.sendCommand(new ProgressCommand());
+            if (COMPLETE == Integer.parseInt(progress)) {
+                return Boolean.TRUE;
+            } else {
                 return null;
             }
+        };
+    }
+
+    public static ExpectedCondition<JSONArray> cookieLoaded(final String key) {
+        return driver -> {
+            String cookieData = driver.sendCommand(new GetCookieCommand());
+            if (cookieData.contains(key)) {
+                return JSONArray.parseArray(cookieData);
+            }
+            return null;
         };
     }
 

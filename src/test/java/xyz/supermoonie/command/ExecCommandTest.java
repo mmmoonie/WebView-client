@@ -1,7 +1,7 @@
 package xyz.supermoonie.command;
 
 import org.junit.Test;
-import xyz.supermoonie.controller.WebViewController;
+import xyz.supermoonie.controller.WebViewDriver;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -14,16 +14,16 @@ public class ExecCommandTest {
 
     @Test
     public void exec() {
-        WebViewController controller = null;
+        WebViewDriver driver = null;
         try {
-            controller = new WebViewController(new InetSocketAddress("127.0.0.1", 7100));
+            driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com/");
             System.out.println(loadCommand.generate());
-            String loadData = controller.sendCommand(loadCommand);
+            String loadData = driver.sendCommand(loadCommand);
             System.out.println(loadData);
 
             ExecCommand execCommand = new ExecCommand("document.getElementsByTagName('html')[0].innerHTML.replace(/\\s/g, ' ')");
-            String execData = controller.sendCommand(execCommand);
+            String execData = driver.sendCommand(execCommand);
             System.out.println(execData);
 
             Thread.sleep(15000);
@@ -31,8 +31,8 @@ public class ExecCommandTest {
             e.printStackTrace();
         } finally {
             try {
-                if (controller != null) {
-                    controller.close();
+                if (driver != null) {
+                    driver.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

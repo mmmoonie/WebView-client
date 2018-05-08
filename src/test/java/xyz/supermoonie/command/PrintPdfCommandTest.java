@@ -1,7 +1,7 @@
 package xyz.supermoonie.command;
 
+import xyz.supermoonie.controller.WebViewDriver;
 import org.junit.Test;
-import xyz.supermoonie.controller.WebViewController;
 import xyz.supermoonie.expection.ExpectedConditions;
 import xyz.supermoonie.wait.Wait;
 
@@ -16,14 +16,14 @@ public class PrintPdfCommandTest {
 
     @Test
     public void printPdf() {
-        WebViewController controller = null;
+        WebViewDriver driver = null;
         try {
-            controller = new WebViewController(new InetSocketAddress("127.0.0.1", 7100));
+            driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             LoadCommand loadCommand = new LoadCommand("https://juejin.im/entry/5ae2c177f265da0b722ad90b");
-            String loadData = controller.sendCommand(loadCommand);
+            String loadData = driver.sendCommand(loadCommand);
             System.out.println(loadData);
 
-            Wait wait = new Wait(controller, 20000, 300);
+            Wait wait = new Wait(driver, 20000, 300);
             wait.until(ExpectedConditions.loadFinished());
 
             ExecCommand loadImgCommand = new ExecCommand("" +
@@ -36,13 +36,13 @@ public class PrintPdfCommandTest {
                     "imgArr[i].width = width;" +
                     "imgArr[i].height = height;" +
                     "}");
-            String loadImgData = controller.sendCommand(loadImgCommand);
+            String loadImgData = driver.sendCommand(loadImgCommand);
             System.out.println(loadImgData);
 
             wait.until(ExpectedConditions.loadFinished());
 
             PrintPdfCommand printPdfCommand = new PrintPdfCommand();
-            String printPdfData = controller.sendCommand(printPdfCommand);
+            String printPdfData = driver.sendCommand(printPdfCommand);
             System.out.println(printPdfData);
 
             Thread.sleep(5000);
@@ -50,8 +50,8 @@ public class PrintPdfCommandTest {
             e.printStackTrace();
         } finally {
             try {
-                if (controller != null) {
-                    controller.close();
+                if (driver != null) {
+                    driver.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

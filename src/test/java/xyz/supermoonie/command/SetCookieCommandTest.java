@@ -1,10 +1,9 @@
 package xyz.supermoonie.command;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import xyz.supermoonie.controller.WebViewDriver;
 import org.junit.Test;
-import xyz.supermoonie.controller.WebViewController;
 
 import java.io.IOException;
 import java.net.HttpCookie;
@@ -19,18 +18,16 @@ public class SetCookieCommandTest {
     @Test
     public void setCookie() {
         try {
-            WebViewController controller = null;
+            WebViewDriver driver = null;
             HttpCookie[] cookies = null;
             try {
-                controller = new WebViewController(new InetSocketAddress("127.0.0.1", 7100));
+                driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
                 LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
-                String loadData = controller.sendCommand(loadCommand);
+                String loadData = driver.sendCommand(loadCommand);
                 System.out.println(loadData);
 
-                String cookieData = controller.sendCommand(new GetCookieCommand());
-                System.out.println(cookieData);
-                JSONObject cookiesJson = JSON.parseObject(cookieData);
-                JSONArray cookieArray = cookiesJson.getJSONArray("data");
+                String cookieData = driver.sendCommand(new GetCookieCommand());
+                JSONArray cookieArray = JSONArray.parseArray(cookieData);
                 cookies = new HttpCookie[cookieArray.size()];
                 for (int i = 0; i < cookieArray.size(); i ++) {
                     JSONObject cookieJson = cookieArray.getJSONObject(i);
@@ -41,31 +38,31 @@ public class SetCookieCommandTest {
                 }
             } finally {
                 try {
-                    if (controller != null) {
-                        controller.close();
+                    if (driver != null) {
+                        driver.close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
-            WebViewController webViewController = null;
+            WebViewDriver webViewDriver = null;
             try {
-                webViewController = new WebViewController(new InetSocketAddress("127.0.0.1", 7100));
+                webViewDriver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
                 LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
-                String loadData = webViewController.sendCommand(loadCommand);
+                String loadData = webViewDriver.sendCommand(loadCommand);
                 System.out.println(loadData);
 
                 SetCookieCommand setCookieCommand = new SetCookieCommand(cookies);
-                String setCookieData = webViewController.sendCommand(setCookieCommand);
+                String setCookieData = webViewDriver.sendCommand(setCookieCommand);
                 System.out.println(setCookieData);
 
-                String cookieData = webViewController.sendCommand(new GetCookieCommand());
+                String cookieData = webViewDriver.sendCommand(new GetCookieCommand());
                 System.out.println(cookieData);
 
             } finally {
                 try {
-                    if (webViewController != null) {
-                        webViewController.close();
+                    if (webViewDriver != null) {
+                        webViewDriver.close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();

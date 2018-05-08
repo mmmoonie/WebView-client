@@ -1,6 +1,7 @@
 package xyz.supermoonie.expection;
 
-import xyz.supermoonie.controller.WebViewController;
+
+import xyz.supermoonie.controller.WebViewDriver;
 
 /**
  * @author moonie
@@ -12,7 +13,8 @@ public interface ExpectedCondition<T> {
      * 执行
      *
      * @param driver
+     * @throws Exception
      * @return
      */
-    T apply(WebViewController driver);
+    T apply(WebViewDriver driver) throws Exception;
 }

@@ -1,7 +1,12 @@
 package xyz.supermoonie.wait;
 
-import xyz.supermoonie.controller.WebViewController;
+
+import xyz.supermoonie.controller.WebViewDriver;
+import xyz.supermoonie.exception.WebViewClientException;
+import xyz.supermoonie.exception.WebViewConnectException;
 import xyz.supermoonie.expection.ExpectedCondition;
+
+import java.io.IOException;
 
 /**
  * @author moonie
@@ -11,41 +16,36 @@ public class Wait{
 
     private int timeOut;
     private int interval;
-    private WebViewController controller;
+    private WebViewDriver driver;
 
-    public Wait(WebViewController controller) {
-        this(controller, 10000, 300);
+    public Wait(WebViewDriver driver) {
+        this(driver, 10000, 300);
     }
 
-    public Wait(WebViewController controller, int timeOut, int interval) {
+    public Wait(WebViewDriver driver, int timeOut, int interval) {
         this.timeOut = timeOut;
         this.interval = interval;
-        this.controller = controller;
+        this.driver = driver;
     }
 
     public <V> V until(ExpectedCondition<V> condition) {
         long end = System.currentTimeMillis() + timeOut;
         do {
             try {
-                V value = condition.apply(controller);
+                Thread.sleep(interval);
+                V value = condition.apply(driver);
                 if (null != value) {
                     return value;
                 }
-
-            } catch (Exception ignore) {
-
+            } catch (Exception e) {
+                if (e instanceof IOException) {
+                    throw new WebViewConnectException(e.getMessage(), e);
+                }
             }
             if (System.currentTimeMillis() > end) {
-                throw new RuntimeException("time out");
+                throw new WebViewClientException("time out");
             }
-            try {
-                Thread.sleep(interval);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
         } while (true);
-
     }
 
 }

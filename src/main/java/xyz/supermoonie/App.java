@@ -6,7 +6,7 @@ import xyz.supermoonie.command.ExecCommand;
 import xyz.supermoonie.command.GetCookieCommand;
 import xyz.supermoonie.command.LoadCommand;
 import xyz.supermoonie.command.ScreenshotCommand;
-import xyz.supermoonie.controller.WebViewController;
+import xyz.supermoonie.controller.WebViewDriver;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -20,17 +20,17 @@ import java.util.Base64;
  */
 public class App {
     public static void main(String[] args) {
-        WebViewController controller = null;
+        WebViewDriver driver = null;
         try {
-            controller = new WebViewController(new InetSocketAddress("127.0.0.1", 7100));
+            driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
-            String loadData = controller.sendCommand(loadCommand);
+            String loadData = driver.sendCommand(loadCommand);
             System.out.println(loadData);
 
-            String cookieData = controller.sendCommand(new GetCookieCommand());
+            String cookieData = driver.sendCommand(new GetCookieCommand());
             System.out.println(cookieData);
             ScreenshotCommand screenshotCommand = new ScreenshotCommand("img[src=VerifyImageServlet]");
-            String captchaData = controller.sendCommand(screenshotCommand);
+            String captchaData = driver.sendCommand(screenshotCommand);
             System.out.println(captchaData);
             JSONObject captchaJson = JSON.parseObject(captchaData);
             String base64Image = captchaJson.getString("data");
@@ -43,14 +43,14 @@ public class App {
                     "$('input[name=imagecode]').val('%s');" +
                     "login_submit(loginform);", account, password, captcha);
             ExecCommand loginCommand = new ExecCommand(js);
-            String loginData = controller.sendCommand(loginCommand);
+            String loginData = driver.sendCommand(loginCommand);
             System.out.println(loginData);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
             try {
-                if (controller != null) {
-                    controller.close();
+                if (driver != null) {
+                    driver.close();
                 }
             } catch (IOException e) {
                 e.printStackTrace();

@@ -15,7 +15,7 @@ public class SetCookieCommand extends AbstractCommand {
     private HttpCookie[] cookies;
 
     public SetCookieCommand(HttpCookie[] cookies) {
-        this.cookies = cookies;
+        this.cookies = cookies.clone();
     }
 
     @Override
@@ -33,7 +33,4 @@ public class SetCookieCommand extends AbstractCommand {
         return json.toJSONString();
     }
 
-    public HttpCookie[] getCookies() {
-        return cookies;
-    }
 }

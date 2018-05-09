@@ -42,6 +42,8 @@ public class Loop {
                 if (i >= retryTimes -1) {
                     throw new WebViewConnectException(e.getMessage(), e);
                 }
+            } catch (WebViewClientException ignore) {
+
             }
         }
         throw new WebViewClientException(retryTimes + " times has been used, but no result return");

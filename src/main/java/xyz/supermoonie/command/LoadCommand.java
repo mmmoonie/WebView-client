@@ -16,23 +16,32 @@ public class LoadCommand extends AbstractCommand {
 
     private String url;
     private String interceptor;
+    private String extractor;
     private Proxy proxy;
 
-    public LoadCommand(String url) {
-        this(url, "", null);
+    public LoadCommand() {
     }
 
-    public LoadCommand(String url, String interceptor) {
-        this(url, interceptor, null);
+    public LoadCommand(String url) {
+        this(url, "", "", null);
     }
 
     public LoadCommand(String url, Proxy proxy) {
-        this(url, "", proxy);
+        this(url, "", "", proxy);
     }
 
-    public LoadCommand(String url, String interceptor, Proxy proxy) {
+    public LoadCommand(String url, String interceptor) {
+        this(url, interceptor, "", null);
+    }
+
+    public LoadCommand(String url, String interceptor, String extractor) {
+        this(url, interceptor, extractor, null);
+    }
+
+    public LoadCommand(String url, String interceptor, String extractor, Proxy proxy) {
         this.url = url;
         this.interceptor = interceptor;
+        this.extractor = extractor;
         this.proxy = proxy;
     }
 
@@ -41,7 +50,8 @@ public class LoadCommand extends AbstractCommand {
         JSONObject json = new JSONObject();
         json.put("op", "load");
         json.put("url", url);
-        json.put("interceptor", interceptor);
+        json.put("interceptor", interceptor == null ? "" : interceptor);
+        json.put("extractor", extractor == null ? "" : extractor);
         if (proxy != null) {
             JSONObject proxyJson = new JSONObject();
             if (proxy.type() == Proxy.Type.SOCKS) {
@@ -57,11 +67,35 @@ public class LoadCommand extends AbstractCommand {
         return json.toJSONString();
     }
 
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
     public String getInterceptor() {
         return interceptor;
     }
 
-    public String getUrl() {
-        return url;
+    public void setInterceptor(String interceptor) {
+        this.interceptor = interceptor;
+    }
+
+    public String getExtractor() {
+        return extractor;
+    }
+
+    public void setExtractor(String extractor) {
+        this.extractor = extractor;
+    }
+
+    public Proxy getProxy() {
+        return proxy;
+    }
+
+    public void setProxy(Proxy proxy) {
+        this.proxy = proxy;
     }
 }

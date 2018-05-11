@@ -1,8 +1,12 @@
 package xyz.supermoonie.expection;
 
 import com.alibaba.fastjson.JSONArray;
+import xyz.supermoonie.command.ExtractCommand;
 import xyz.supermoonie.command.GetCookieCommand;
 import xyz.supermoonie.command.ProgressCommand;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author moonie
@@ -33,6 +37,19 @@ public class ExpectedConditions {
                 return JSONArray.parseArray(cookieData);
             }
             return null;
+        };
+    }
+
+    public static ExpectedCondition<Map<String, String>> extractFinished(String... extractors) {
+        return driver -> {
+            Map<String, String> dataMap = new HashMap<>(extractors.length);
+            for (String extractor : extractors) {
+                ExtractCommand extractCommand = new ExtractCommand(extractor);
+                System.out.println(extractCommand.generate());
+                String base64Data = driver.sendCommand(extractCommand);
+                dataMap.put(extractor, base64Data);
+            }
+            return dataMap;
         };
     }
 

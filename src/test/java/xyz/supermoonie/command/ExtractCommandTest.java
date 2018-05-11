@@ -7,6 +7,7 @@ import xyz.supermoonie.wait.Wait;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Map;
 
 /**
  *
@@ -22,12 +23,10 @@ public class ExtractCommandTest {
             LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
             loadCommand.setExtractor("/VerifyImageServlet");
             driver.sendCommand(loadCommand);
-            Wait wait = new Wait(driver);
-            wait.until(ExpectedConditions.loadFinished());
+            Wait wait = new Wait(driver, 20000, 500);
+            Map<String, String> dataMap = wait.until(ExpectedConditions.extractFinished("/VerifyImageServlet"));
 
-            ExtractCommand extractCommand = new ExtractCommand("/VerifyImageServlet");
-            String extractData = driver.sendCommand(extractCommand);
-            System.out.println(extractData);
+            System.out.println(dataMap.get("/VerifyImageServlet"));
 
             Thread.sleep(1000);
         } catch (IOException | InterruptedException e) {

@@ -9,17 +9,17 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class ExtractCommand extends AbstractCommand{
 
-    private String path;
+    private String extractor;
 
-    public ExtractCommand(String path) {
-        this.path = path;
+    public ExtractCommand(String extractor) {
+        this.extractor = extractor;
     }
 
     @Override
     public String generate() {
         JSONObject json = new JSONObject();
         json.put("op", "extract");
-        json.put("path", path);
+        json.put("extractor", extractor);
         return json.toJSONString();
     }
 }

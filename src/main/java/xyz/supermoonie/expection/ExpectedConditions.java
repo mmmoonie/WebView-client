@@ -1,6 +1,7 @@
 package xyz.supermoonie.expection;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import xyz.supermoonie.command.ExtractCommand;
 import xyz.supermoonie.command.GetCookieCommand;
 import xyz.supermoonie.command.ProgressCommand;
@@ -44,12 +45,16 @@ public class ExpectedConditions {
 
     public static ExpectedCondition<Map<String, String>> extractFinished(String... extractors) {
         return driver -> {
-            Map<String, String> dataMap = new HashMap<>(extractors.length);
-            for (String extractor : extractors) {
-                ExtractCommand extractCommand = new ExtractCommand(extractor);
-                System.out.println(extractCommand.generate());
-                String base64Data = driver.sendCommand(extractCommand);
-                dataMap.put(extractor, base64Data);
+            ExtractCommand extractCommand = new ExtractCommand(extractors);
+            System.out.println(extractCommand.generate());
+            String dataArrayText = driver.sendCommand(extractCommand);
+            JSONArray dataArray = JSONArray.parseArray(dataArrayText);
+            Map<String, String> dataMap = new HashMap<>(dataArray.size());
+            for (int i = 0; i < dataArray.size(); i ++) {
+                JSONObject json = dataArray.getJSONObject(i);
+                String key = json.keySet().iterator().next();
+                String base64Value = json.getString(key);
+                dataMap.put(key, base64Value);
             }
             return dataMap;
         };

@@ -26,7 +26,7 @@ public class ExtractCommandTest {
             LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
             loadCommand.setExtractor(Pattern.compile("(/VerifyImageServlet|/js/md5.js)"));
             driver.sendCommand(loadCommand);
-            Wait wait = new Wait(driver, 20000, 500);
+            Wait wait = new Wait(driver, 10000, 500);
             Loop loop = new Loop(driver, wait);
             Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished("/js/md5.js", "/VerifyImageServlet"));
             System.out.println(dataMap.get("/VerifyImageServlet"));

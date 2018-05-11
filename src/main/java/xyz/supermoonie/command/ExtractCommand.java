@@ -1,6 +1,9 @@
 package xyz.supermoonie.command;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+
+import java.util.Arrays;
 
 /**
  * 截取命令，当 WebViewSpider 截取了数据时，可以使用此命令获取数据
@@ -13,28 +16,24 @@ public class ExtractCommand extends AbstractCommand{
     /**
      * 截取器，作为从 Map 中获取的 key
      */
-    private String extractor;
+    private String[] extractors;
 
-    public ExtractCommand(String extractor) {
-        this.extractor = extractor;
+    public ExtractCommand(String... extractors) {
+        this.extractors = extractors;
     }
 
     @Override
     public String generate() {
-        if (null == extractor) {
+        if (null == extractors || extractors.length == 0) {
             throw new IllegalArgumentException("extractor is null");
         }
         JSONObject json = new JSONObject();
         json.put("op", "extract");
-        json.put("extractor", extractor);
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.addAll(Arrays.asList(extractors));
+        json.put("extractor", jsonArray);
         return json.toJSONString();
     }
 
-    public String getExtractor() {
-        return extractor;
-    }
 
-    public void setExtractor(String extractor) {
-        this.extractor = extractor;
-    }
 }

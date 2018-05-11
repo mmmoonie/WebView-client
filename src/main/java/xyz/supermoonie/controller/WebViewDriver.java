@@ -10,17 +10,24 @@ import java.net.Socket;
 import java.net.SocketAddress;
 
 /**
+ * WebViewSpider 驱动
  *
  * @author Administrator
- * @date 2018/4/18 0018
+ * @date 2018/4/18
  */
 public class WebViewDriver implements Closeable{
 
+    /**
+     * 分隔符
+     */
     private static final String BOUNDARY = "boundary-----------";
     private static final String CODE_KEY = "code";
     private static final String DATA_KEY = "data";
     private static final int OK_CODE = 200;
 
+    /**
+     * 通过 socket 与 NettySpiderServer 建立链接
+     */
     private Socket socket;
     private PrintWriter writer;
     private BufferedReader reader;

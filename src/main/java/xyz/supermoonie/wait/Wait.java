@@ -9,6 +9,10 @@ import xyz.supermoonie.expection.ExpectedCondition;
 import java.io.IOException;
 
 /**
+ * 等待，针对的是单个命令
+ * 当满足期望的条件时，则返回相应的数据
+ * 当不满足期望的条件时，则重试直到超时
+ *
  * @author moonie
  * @date 2018/5/1
  */
@@ -28,6 +32,13 @@ public class Wait{
         this.driver = driver;
     }
 
+    /**
+     * 等待，直到达到某种条件
+     *
+     * @param condition     期望达到的条件
+     * @param <V>           结果类型
+     * @return              结果
+     */
     public <V> V until(ExpectedCondition<V> condition) {
         long end = System.currentTimeMillis() + timeOut;
         do {

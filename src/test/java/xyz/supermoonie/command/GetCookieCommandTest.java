@@ -5,6 +5,7 @@ import xyz.supermoonie.controller.WebViewDriver;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URL;
 
 /**
  *
@@ -18,7 +19,7 @@ public class GetCookieCommandTest {
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
 
-            LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
+            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
             String loadData = driver.sendCommand(loadCommand);
             System.out.println(loadData);
 

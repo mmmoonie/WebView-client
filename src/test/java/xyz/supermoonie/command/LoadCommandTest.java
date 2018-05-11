@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.net.URL;
 
 /**
  *
@@ -18,7 +19,7 @@ public class LoadCommandTest {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-            LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
+            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
             System.out.println(loadCommand.generate());
             String loadData = driver.sendCommand(loadCommand);
             System.out.println(loadData);
@@ -42,7 +43,7 @@ public class LoadCommandTest {
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100), 10000, 30000);
             Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress("47.104.63.239", 5998));
-            LoadCommand loadWithProxyCommand = new LoadCommand("https://ip.cn/", proxy);
+            LoadCommand loadWithProxyCommand = new LoadCommand(new URL("https://ip.cn/"), proxy);
             System.out.println(loadWithProxyCommand.generate());
             String loadData = driver.sendCommand(loadWithProxyCommand);
             System.out.println(loadData);

@@ -3,6 +3,9 @@ package xyz.supermoonie.command;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 获取加载进度的指令
+ * 网页加载进度为 0-100
+ *
  * @author moonie
  * @date 2018/4/30
  */

@@ -3,6 +3,7 @@ package xyz.supermoonie.command;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 打印 PDF 命令
  *
  * @author Administrator
  * @date 2018/4/27 0027

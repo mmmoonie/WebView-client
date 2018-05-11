@@ -9,8 +9,10 @@ import xyz.supermoonie.wait.Wait;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.util.Base64;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -23,8 +25,8 @@ public class ExecCommandTest {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-            LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com/");
-            loadCommand.setExtractor("/VerifyImageServlet");
+            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com/"));
+            loadCommand.setExtractor(Pattern.compile("/VerifyImageServlet"));
             Wait wait = new Wait(driver);
             Loop loop = new Loop(driver, wait);
             Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished("/VerifyImageServlet"));
@@ -38,7 +40,7 @@ public class ExecCommandTest {
                     "$('input[name=imagecode]').val('%s');" +
                     "login_submit(loginform);", account, password, captcha);
 
-            ExecCommand execCommand = new ExecCommand(js, "/MainServlet");
+            ExecCommand execCommand = new ExecCommand(js, Pattern.compile("/MainServlet"));
             driver.sendCommand(execCommand);
             String html = wait.until(ExpectedConditions.extractFinished("/MainServlet")).get("/MainServlet");
             System.out.println(html);

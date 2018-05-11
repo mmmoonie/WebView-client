@@ -3,6 +3,7 @@ package xyz.supermoonie.command;
 import com.alibaba.fastjson.JSONObject;
 
 /**
+ * 获取 cookie 的命令
  *
  * @author Administrator
  * @date 2018/4/18 0018

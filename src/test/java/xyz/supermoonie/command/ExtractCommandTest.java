@@ -8,7 +8,9 @@ import xyz.supermoonie.wait.Wait;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -21,8 +23,8 @@ public class ExtractCommandTest {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-            LoadCommand loadCommand = new LoadCommand("https://persons.shgjj.com");
-            loadCommand.setExtractor("(/VerifyImageServlet|/js/md5.js)");
+            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
+            loadCommand.setExtractor(Pattern.compile("(/VerifyImageServlet|/js/md5.js)"));
             driver.sendCommand(loadCommand);
             Wait wait = new Wait(driver, 20000, 500);
             Loop loop = new Loop(driver, wait);

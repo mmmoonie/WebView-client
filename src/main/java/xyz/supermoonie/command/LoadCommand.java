@@ -4,41 +4,60 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.net.URL;
+import java.util.regex.Pattern;
 
 /**
+ * 加载页面的命令，WebViewSpider 接受的第一条命令必须为此命令
  *
  * @author Administrator
  * @date 2018/4/18 0018
  */
 public class LoadCommand extends AbstractCommand {
 
-    public static final String IMAGE_INTERCEPTOR = ".*(png|gif|jpg).*";
+    public static final Pattern IMAGE_INTERCEPTOR = Pattern.compile(".*(png|gif|jpg).*");
 
-    private String url;
-    private String interceptor;
-    private String extractor;
+    /**
+     * 要加载的 URL
+     */
+    private URL url;
+
+    /**
+     * 拦截器，此正则会匹配 URL 中的 path
+     * 匹配到的话，此 URL 就不会发起网络请求，从而减少网络流量
+     */
+    private Pattern interceptor;
+
+    /**
+     * 截取器，此正则会匹配 URL 中的 path
+     * 匹配到的话，此 URL 会被 WebViewSpider 缓存下到 Map 中，供 {@link ExtractCommand} 获取
+     */
+    private Pattern extractor;
+    /**
+     * 代理，设置了 proxy 后，WebViewSpider 将使用此代理访问网络
+     */
     private Proxy proxy;
 
     public LoadCommand() {
     }
 
-    public LoadCommand(String url) {
-        this(url, "", "", null);
+    public LoadCommand(URL url) {
+        this(url, null, null, null);
     }
 
-    public LoadCommand(String url, Proxy proxy) {
-        this(url, "", "", proxy);
+    public LoadCommand(URL url, Proxy proxy) {
+        this(url, null, null, proxy);
     }
 
-    public LoadCommand(String url, String interceptor) {
-        this(url, interceptor, "", null);
+    public LoadCommand(URL url, String interceptor) {
+        this(url, null, null, null);
     }
 
-    public LoadCommand(String url, String interceptor, String extractor) {
-        this(url, interceptor, extractor, null);
+    public LoadCommand(URL url, String interceptor, Pattern extractor) {
+        this(url, null, extractor, null);
     }
 
-    public LoadCommand(String url, String interceptor, String extractor, Proxy proxy) {
+    public LoadCommand(URL url, Pattern interceptor, Pattern extractor, Proxy proxy) {
         this.url = url;
         this.interceptor = interceptor;
         this.extractor = extractor;
@@ -47,11 +66,18 @@ public class LoadCommand extends AbstractCommand {
 
     @Override
     public String generate() {
+        if (null == url) {
+            throw new IllegalArgumentException("url is null");
+        }
         JSONObject json = new JSONObject();
         json.put("op", "load");
-        json.put("url", url);
-        json.put("interceptor", interceptor == null ? "" : interceptor);
-        json.put("extractor", extractor == null ? "" : extractor);
+        json.put("url", url.toString());
+        if (null != interceptor) {
+            json.put("interceptor", interceptor);
+        }
+        if (null != extractor) {
+            json.put("extractor", extractor);
+        }
         if (proxy != null) {
             JSONObject proxyJson = new JSONObject();
             if (proxy.type() == Proxy.Type.SOCKS) {
@@ -67,27 +93,27 @@ public class LoadCommand extends AbstractCommand {
         return json.toJSONString();
     }
 
-    public String getUrl() {
+    public URL getUrl() {
         return url;
     }
 
-    public void setUrl(String url) {
+    public void setUrl(URL url) {
         this.url = url;
     }
 
-    public String getInterceptor() {
+    public Pattern getInterceptor() {
         return interceptor;
     }
 
-    public void setInterceptor(String interceptor) {
+    public void setInterceptor(Pattern interceptor) {
         this.interceptor = interceptor;
     }
 
-    public String getExtractor() {
+    public Pattern getExtractor() {
         return extractor;
     }
 
-    public void setExtractor(String extractor) {
+    public void setExtractor(Pattern extractor) {
         this.extractor = extractor;
     }
 

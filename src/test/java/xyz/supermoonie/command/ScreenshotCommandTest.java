@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.net.URL;
 import java.util.Random;
 
 /**
@@ -20,7 +21,7 @@ public class ScreenshotCommandTest {
             try {
                 driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
 
-                LoadCommand loadCommand = new LoadCommand("https://juejin.im/entry/5ae2c177f265da0b722ad90b");
+                LoadCommand loadCommand = new LoadCommand(new URL("https://juejin.im/entry/5ae2c177f265da0b722ad90b"));
                 String loadData = driver.sendCommand(loadCommand);
                 System.out.println(loadData);
 

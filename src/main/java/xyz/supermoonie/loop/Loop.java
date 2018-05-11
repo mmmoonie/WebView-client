@@ -10,14 +10,25 @@ import xyz.supermoonie.wait.Wait;
 import java.io.IOException;
 
 /**
+ * 循环器，针对的是一些列操作
+ * 依赖于 {@link Wait} 当 Wait 返回值不为 null 时，停止循环
  *
  * @author wangchao
  * @date 2018/5/7
  */
 public class Loop {
 
+    /**
+     * WebViewSpider 驱动
+     */
     private WebViewDriver driver;
+    /**
+     * 等待
+     */
     private Wait wait;
+    /**
+     * 重试的最大次数
+     */
     private int retryTimes;
 
     public Loop(WebViewDriver driver, Wait wait) {
@@ -30,6 +41,14 @@ public class Loop {
         this.retryTimes = retryTimes;
     }
 
+    /**
+     * 开始循环
+     *
+     * @param command       指令
+     * @param condition     指令执行后期望返回值达到某种条件
+     * @param <T>           结果类型
+     * @return              结果
+     */
     public <T> T begin(final AbstractCommand command, ExpectedCondition<T> condition) {
         for (int i = 0; i < retryTimes; i ++) {
             try {

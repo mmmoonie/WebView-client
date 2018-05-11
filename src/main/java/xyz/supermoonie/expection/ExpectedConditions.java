@@ -9,6 +9,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * 常用的期望的条件的集合
+ *
  * @author moonie
  * @date 2018/5/1
  */

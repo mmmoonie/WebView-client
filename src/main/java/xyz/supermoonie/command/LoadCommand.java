@@ -49,12 +49,12 @@ public class LoadCommand extends AbstractCommand {
         this(url, null, null, proxy);
     }
 
-    public LoadCommand(URL url, String interceptor) {
-        this(url, null, null, null);
+    public LoadCommand(URL url, Pattern interceptor) {
+        this(url, interceptor, null, null);
     }
 
-    public LoadCommand(URL url, String interceptor, Pattern extractor) {
-        this(url, null, extractor, null);
+    public LoadCommand(URL url, Pattern interceptor, Pattern extractor) {
+        this(url, interceptor, extractor, null);
     }
 
     public LoadCommand(URL url, Pattern interceptor, Pattern extractor, Proxy proxy) {

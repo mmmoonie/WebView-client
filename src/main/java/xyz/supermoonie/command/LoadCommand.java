@@ -33,6 +33,12 @@ public class LoadCommand extends AbstractCommand {
      * 匹配到的话，此 URL 会被 WebViewSpider 缓存下到 Map 中，供 {@link ExtractCommand} 获取
      */
     private Pattern extractor;
+
+    /**
+     * 是否在load 之前清除 cookie
+     */
+    private Boolean clear = Boolean.FALSE;
+
     /**
      * 代理，设置了 proxy 后，WebViewSpider 将使用此代理访问网络
      */
@@ -42,25 +48,26 @@ public class LoadCommand extends AbstractCommand {
     }
 
     public LoadCommand(URL url) {
-        this(url, null, null, null);
+        this(url, null, null, false, null);
     }
 
     public LoadCommand(URL url, Proxy proxy) {
-        this(url, null, null, proxy);
+        this(url, null, null, false, proxy);
     }
 
     public LoadCommand(URL url, Pattern interceptor) {
-        this(url, interceptor, null, null);
+        this(url, interceptor, null, false, null);
     }
 
     public LoadCommand(URL url, Pattern interceptor, Pattern extractor) {
-        this(url, interceptor, extractor, null);
+        this(url, interceptor, extractor, false, null);
     }
 
-    public LoadCommand(URL url, Pattern interceptor, Pattern extractor, Proxy proxy) {
+    public LoadCommand(URL url, Pattern interceptor, Pattern extractor, Boolean clear, Proxy proxy) {
         this.url = url;
         this.interceptor = interceptor;
         this.extractor = extractor;
+        this.clear = clear;
         this.proxy = proxy;
     }
 
@@ -123,5 +130,13 @@ public class LoadCommand extends AbstractCommand {
 
     public void setProxy(Proxy proxy) {
         this.proxy = proxy;
+    }
+
+    public Boolean getClear() {
+        return clear;
+    }
+
+    public void setClear(Boolean clear) {
+        this.clear = clear;
     }
 }

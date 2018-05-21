@@ -17,9 +17,15 @@ public class ExtractCommand extends AbstractCommand{
      * 截取器，作为从 Map 中获取的 key
      */
     private String[] extractors;
+    private int count = 1;
 
     public ExtractCommand(String... extractors) {
         this.extractors = extractors;
+    }
+
+    public ExtractCommand(String[] extractors, int count) {
+        this.extractors = extractors;
+        this.count = count;
     }
 
     @Override
@@ -32,6 +38,7 @@ public class ExtractCommand extends AbstractCommand{
         JSONArray jsonArray = new JSONArray();
         jsonArray.addAll(Arrays.asList(extractors));
         json.put("extractor", jsonArray);
+        json.put("count", count);
         return json.toJSONString();
     }
 

@@ -44,8 +44,12 @@ public class ExpectedConditions {
     }
 
     public static ExpectedCondition<Map<String, String>> extractFinished(String... extractors) {
+        return extractFinished(1, extractors);
+    }
+
+    public static ExpectedCondition<Map<String, String>> extractFinished(int count, String... extractors) {
         return driver -> {
-            ExtractCommand extractCommand = new ExtractCommand(extractors);
+            ExtractCommand extractCommand = new ExtractCommand(extractors, count);
             String dataArrayText = driver.sendCommand(extractCommand);
             JSONArray dataArray = JSONArray.parseArray(dataArrayText);
             Map<String, String> dataMap = new HashMap<>(dataArray.size());

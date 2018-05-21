@@ -25,7 +25,6 @@ public class ExtractCommandTest {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
             loadCommand.setExtractor(Pattern.compile("(/VerifyImageServlet|/js/md5.js)"));
-            driver.sendCommand(loadCommand);
             Wait wait = new Wait(driver, 10000, 500);
             Loop loop = new Loop(driver, wait);
             Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished("/js/md5.js", "/VerifyImageServlet"));

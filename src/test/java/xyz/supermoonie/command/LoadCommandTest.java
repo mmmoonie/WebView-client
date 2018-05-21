@@ -19,7 +19,7 @@ public class LoadCommandTest {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
+            LoadCommand loadCommand = new LoadCommand(new URL("https://www.baidu.com"));
             System.out.println(loadCommand.generate());
             String loadData = driver.sendCommand(loadCommand);
             System.out.println(loadData);

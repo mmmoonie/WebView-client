@@ -46,4 +46,30 @@ public class ExtractCommandTest {
         }
     }
 
+    @Test
+    public void extractWithCount() {
+        WebViewDriver driver = null;
+        try {
+            driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
+            LoadCommand loadCommand = new LoadCommand(new URL("https://housing.ccb.com/tran/WCCMainPlatV5?CCB_IBSVersion=V5&isAjaxRequest=true&SERVLET_NAME=WCCMainPlatV5&TXCODE=NGJJ11&InsID=520109301001&Br_No=520000000"));
+            loadCommand.setExtractor(Pattern.compile("/NCCB_Encoder/Encoder"));
+            Wait wait = new Wait(driver, 10000, 500);
+            Loop loop = new Loop(driver, wait);
+            Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished(2, "/NCCB_Encoder/Encoder"));
+            System.out.println(dataMap.get("/NCCB_Encoder/Encoder"));
+
+            Thread.sleep(1000);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (driver != null) {
+                    driver.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 }

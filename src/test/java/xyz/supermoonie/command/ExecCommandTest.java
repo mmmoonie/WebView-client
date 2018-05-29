@@ -26,7 +26,6 @@ public class ExecCommandTest {
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com/"));
-            loadCommand.setExtractor(Pattern.compile("/VerifyImageServlet"));
             Wait wait = new Wait(driver);
             Loop loop = new Loop(driver, wait);
             Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished("/VerifyImageServlet"));
@@ -40,7 +39,7 @@ public class ExecCommandTest {
                     "$('input[name=imagecode]').val('%s');" +
                     "login_submit(loginform);", account, password, captcha);
 
-            ExecCommand execCommand = new ExecCommand(js, Pattern.compile("/MainServlet"));
+            ExecCommand execCommand = new ExecCommand(js);
             driver.sendCommand(execCommand);
             String html = wait.until(ExpectedConditions.extractFinished("/MainServlet")).get("/MainServlet");
             System.out.println(html);

@@ -29,12 +29,6 @@ public class LoadCommand extends AbstractCommand {
     private Pattern interceptor;
 
     /**
-     * 截取器，此正则会匹配 URL 中的 path
-     * 匹配到的话，此 URL 会被 WebViewSpider 缓存下到 Map 中，供 {@link ExtractCommand} 获取
-     */
-    private Pattern extractor;
-
-    /**
      * 是否在load 之前清除 cookie
      */
     private Boolean clear = Boolean.FALSE;
@@ -48,25 +42,21 @@ public class LoadCommand extends AbstractCommand {
     }
 
     public LoadCommand(URL url) {
-        this(url, null, null, false, null);
+        this(url, null, false, null);
     }
 
     public LoadCommand(URL url, Proxy proxy) {
-        this(url, null, null, false, proxy);
+        this(url, null, false, proxy);
     }
 
     public LoadCommand(URL url, Pattern interceptor) {
-        this(url, interceptor, null, false, null);
+        this(url, interceptor, false, null);
     }
 
-    public LoadCommand(URL url, Pattern interceptor, Pattern extractor) {
-        this(url, interceptor, extractor, false, null);
-    }
 
-    public LoadCommand(URL url, Pattern interceptor, Pattern extractor, Boolean clear, Proxy proxy) {
+    public LoadCommand(URL url, Pattern interceptor, Boolean clear, Proxy proxy) {
         this.url = url;
         this.interceptor = interceptor;
-        this.extractor = extractor;
         this.clear = clear;
         this.proxy = proxy;
     }
@@ -81,9 +71,6 @@ public class LoadCommand extends AbstractCommand {
         json.put("url", url.toString());
         if (null != interceptor) {
             json.put("interceptor", interceptor);
-        }
-        if (null != extractor) {
-            json.put("extractor", extractor);
         }
         if (proxy != null) {
             JSONObject proxyJson = new JSONObject();
@@ -114,14 +101,6 @@ public class LoadCommand extends AbstractCommand {
 
     public void setInterceptor(Pattern interceptor) {
         this.interceptor = interceptor;
-    }
-
-    public Pattern getExtractor() {
-        return extractor;
-    }
-
-    public void setExtractor(Pattern extractor) {
-        this.extractor = extractor;
     }
 
     public Proxy getProxy() {

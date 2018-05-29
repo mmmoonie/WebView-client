@@ -19,20 +19,8 @@ public class ExecCommand extends AbstractCommand {
      */
     private String javaScript;
 
-    /**
-     * 截取器，此正则会匹配 URL 中的 path ，
-     * 如果匹配的话，会被 WebViewSpider 缓存下到 Map 中，供 {@link ExtractCommand} 获取
-     * 其中，URL 中的 path 会用作 Map 中的 key
-     */
-    private Pattern extractor;
-
     public ExecCommand(String javaScript) {
-        this(javaScript, null);
-    }
-
-    public ExecCommand(String javaScript, Pattern extractor) {
         this.javaScript = javaScript;
-        this.extractor = extractor;
     }
 
     @Override
@@ -43,9 +31,6 @@ public class ExecCommand extends AbstractCommand {
         JSONObject json = new JSONObject();
         json.put("op", "exec");
         json.put("js", javaScript);
-        if (null != extractor) {
-            json.put("extractor", extractor.toString());
-        }
         return json.toJSONString();
     }
 
@@ -55,13 +40,5 @@ public class ExecCommand extends AbstractCommand {
 
     public void setJavaScript(String javaScript) {
         this.javaScript = javaScript;
-    }
-
-    public Pattern getExtractor() {
-        return extractor;
-    }
-
-    public void setExtractor(Pattern extractor) {
-        this.extractor = extractor;
     }
 }

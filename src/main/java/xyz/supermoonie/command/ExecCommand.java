@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public class ExecCommand extends AbstractCommand {
 
+    public static final String JAVA_SCRIPT_ERROR = "TypeError";
+
     /**
      * 需要执行的 javaScript 代码
      */

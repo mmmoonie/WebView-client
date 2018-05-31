@@ -41,10 +41,12 @@ public class ExecCommandTest {
 
             ExecCommand execCommand = new ExecCommand(js);
             driver.sendCommand(execCommand);
-            String html = wait.until(ExpectedConditions.extractFinished("/MainServlet")).get("/MainServlet");
-            System.out.println(html);
+            String mainServlet = Pattern.compile("/MainServlet\\?username=.+&password=.+&imagecode=.+&password_md5=.+&ID=0").toString();
+            System.out.println(mainServlet);
+            Map<String, String> map = wait.until(ExpectedConditions.extractFinished(mainServlet));
+            System.out.println(new String(Base64.getDecoder().decode(map.get(mainServlet)), "GBK"));
 
-            Thread.sleep(15000);
+            Thread.sleep(1500);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {

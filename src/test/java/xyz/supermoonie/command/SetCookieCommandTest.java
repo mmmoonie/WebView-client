@@ -21,38 +21,45 @@ public class SetCookieCommandTest {
         try {
             WebViewDriver driver = null;
             HttpCookie[] cookies = null;
-            try {
-                driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-                LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-                String loadData = driver.sendCommand(loadCommand);
-                System.out.println(loadData);
-
-                String cookieData = driver.sendCommand(new GetCookieCommand());
-                JSONArray cookieArray = JSONArray.parseArray(cookieData);
-                cookies = new HttpCookie[cookieArray.size()];
-                for (int i = 0; i < cookieArray.size(); i ++) {
-                    JSONObject cookieJson = cookieArray.getJSONObject(i);
-                    String name = cookieJson.getString("name");
-                    String value = cookieJson.getString("value");
-                    HttpCookie cookie = new HttpCookie(name, value);
-                    cookies[i] = cookie;
-                }
-            } finally {
-                try {
-                    if (driver != null) {
-                        driver.close();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+//            try {
+//                driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
+//                LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
+//                String loadData = driver.sendCommand(loadCommand);
+//                System.out.println(loadData);
+//
+//                String cookieData = driver.sendCommand(new GetCookieCommand());
+//                JSONArray cookieArray = JSONArray.parseArray(cookieData);
+//                cookies = new HttpCookie[cookieArray.size()];
+//                for (int i = 0; i < cookieArray.size(); i ++) {
+//                    JSONObject cookieJson = cookieArray.getJSONObject(i);
+//                    String name = cookieJson.getString("name");
+//                    String value = cookieJson.getString("value");
+//                    HttpCookie cookie = new HttpCookie(name, value);
+//                    cookies[i] = cookie;
+//                }
+//            } finally {
+//                try {
+//                    if (driver != null) {
+//                        driver.close();
+//                    }
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
             WebViewDriver webViewDriver = null;
             try {
                 webViewDriver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-                LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-                String loadData = webViewDriver.sendCommand(loadCommand);
-                System.out.println(loadData);
-
+//                LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
+//                String loadData = webViewDriver.sendCommand(loadCommand);
+//                System.out.println(loadData);
+                cookies = new HttpCookie[1];
+                HttpCookie cookie = new HttpCookie("hello", "world");
+                cookie.setDomain("persons.shgjj.com");
+                cookie.setPath("/");
+                cookie.setMaxAge(0);
+                cookie.setHttpOnly(false);
+                cookie.setSecure(false);
+                cookies[0] = cookie;
                 SetCookieCommand setCookieCommand = new SetCookieCommand(cookies);
                 String setCookieData = webViewDriver.sendCommand(setCookieCommand);
                 System.out.println(setCookieData);

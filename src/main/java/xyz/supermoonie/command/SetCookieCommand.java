@@ -32,6 +32,11 @@ public class SetCookieCommand extends AbstractCommand {
             JSONObject cookieJson = new JSONObject();
             cookieJson.put("name", cookie.getName());
             cookieJson.put("value", cookie.getValue());
+            cookieJson.put("domain", cookie.getDomain());
+            cookieJson.put("path", cookie.getPath());
+            cookieJson.put("expirationDate", cookie.getMaxAge());
+            cookieJson.put("httpOnly", cookie.isHttpOnly());
+            cookieJson.put("secure", cookie.getSecure());
             cookieArray.add(cookieJson);
         }
         json.put("cookies", cookieArray);

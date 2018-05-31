@@ -27,7 +27,7 @@ public class ExtractCommandTest {
             LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
             Wait wait = new Wait(driver, 10000, 500);
             Loop loop = new Loop(driver, wait);
-            Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished("https://persons.shgjj.com/VerifyImageServlet"));
+            Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished("/VerifyImageServlet"));
             String base64Data = dataMap.get("https://persons.shgjj.com/VerifyImageServlet");
             byte[] bytes = Base64.getDecoder().decode(base64Data);
             JOptionPane.showMessageDialog(null, new ImageIcon(bytes), "captcha", JOptionPane.INFORMATION_MESSAGE);
@@ -47,15 +47,14 @@ public class ExtractCommandTest {
     }
 
     @Test
-    public void extractWithCount() throws Exception {
+    public void extractWithCount() {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-            LoadCommand loadCommand = new LoadCommand(new URL("https://housing.ccb.com/tran/WCCMainPlatV5?CCB_IBSVersion=V5&isAjaxRequest=true&SERVLET_NAME=WCCMainPlatV5&TXCODE=NGJJ11&InsID=520109301001&Br_No=520000000"));
-            Wait wait = new Wait(driver, 10000, 500);
-            Loop loop = new Loop(driver, wait);
-            Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished("/NCCB_Encoder/Encoder"));
-            System.out.println(dataMap.get("/NCCB_Encoder/Encoder"));
+            String mainServlet = Pattern.compile("/MainServlet\\?username=.+&password=.+&imagecode=.+&password_md5=.+&ID=0").toString();
+            System.out.println(mainServlet);
+            String data = driver.sendCommand(new ExtractCommand(mainServlet));
+            System.out.println(data);
 
             Thread.sleep(1000);
         } catch (IOException | InterruptedException e) {

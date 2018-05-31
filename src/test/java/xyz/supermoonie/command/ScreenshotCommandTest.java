@@ -2,6 +2,8 @@ package xyz.supermoonie.command;
 
 import xyz.supermoonie.controller.WebViewDriver;
 import org.junit.Test;
+import xyz.supermoonie.expection.ExpectedConditions;
+import xyz.supermoonie.wait.Wait;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -20,10 +22,12 @@ public class ScreenshotCommandTest {
             WebViewDriver driver = null;
             try {
                 driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
+                Wait wait = new Wait(driver);
 
-                LoadCommand loadCommand = new LoadCommand(new URL("https://juejin.im/entry/5ae2c177f265da0b722ad90b"));
+                LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
                 String loadData = driver.sendCommand(loadCommand);
                 System.out.println(loadData);
+                wait.until(ExpectedConditions.loadFinished());
 
                 ScreenshotCommand screenshotCommand = new ScreenshotCommand("body");
                 String captchaData = driver.sendCommand(screenshotCommand);

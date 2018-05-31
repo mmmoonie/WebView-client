@@ -5,29 +5,24 @@ import xyz.supermoonie.controller.WebViewDriver;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.net.URL;
 
-/**
- *
- * Created by wangchao on 2018/4/19.
- */
-public class GetCookieCommandTest {
+public class DeleteCookieCommandTest {
 
     @Test
-    public void getCookie() {
+    public void deleteCookie() {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-//
-//            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-//            String loadData = driver.sendCommand(loadCommand);
-//            System.out.println(loadData);
+
+            DeleteCookieCommand deleteCookieCommand = new DeleteCookieCommand();
+            String data = driver.sendCommand(deleteCookieCommand);
+            System.out.println(data);
 
             GetCookieCommand getCookieCommand = new GetCookieCommand();
-            String cookieData = driver.sendCommand(getCookieCommand);
-            System.out.println(cookieData);
+            data = driver.sendCommand(getCookieCommand);
+            System.out.println(data);
 
-            Thread.sleep(1000);
+            Thread.sleep(1500);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {
@@ -40,4 +35,5 @@ public class GetCookieCommandTest {
             }
         }
     }
+
 }

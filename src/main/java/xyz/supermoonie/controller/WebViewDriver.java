@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import xyz.supermoonie.command.AbstractCommand;
 import xyz.supermoonie.exception.WebViewClientException;
+import xyz.supermoonie.parser.Parser;
 
 import java.io.*;
 import java.net.Socket;
@@ -62,7 +63,7 @@ public class WebViewDriver implements Closeable{
         writer.flush();
     }
 
-    public String sendCommand(AbstractCommand command) throws WebViewClientException, IOException {
+    public String sendCommand(AbstractCommand command) throws IOException {
         write(command);
         String result = read();
         try {
@@ -75,6 +76,11 @@ public class WebViewDriver implements Closeable{
         } catch (Exception e) {
             throw new WebViewClientException(e.getMessage() + " , result: " + result);
         }
+    }
+
+    public <T> T sendCommand(AbstractCommand command, Parser<T> parser) throws Exception {
+        String result = sendCommand(command);
+        return parser.parse(result);
     }
 
     @Override

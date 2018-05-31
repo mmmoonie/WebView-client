@@ -62,4 +62,17 @@ public class ExpectedConditions {
         };
     }
 
+    public static ExpectedCondition<String> extractFinished(String extractor) {
+        return driver -> {
+            ExtractCommand extractCommand = new ExtractCommand(extractor);
+            String dataArrayText = driver.sendCommand(extractCommand);
+            JSONArray dataArray = JSONArray.parseArray(dataArrayText);
+            if (dataArray.size() == 0) {
+                return null;
+            }
+            JSONObject json = dataArray.getJSONObject(0);
+            return json.getString(extractor);
+        };
+    }
+
 }

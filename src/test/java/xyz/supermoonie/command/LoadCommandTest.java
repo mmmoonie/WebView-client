@@ -20,10 +20,10 @@ public class LoadCommandTest {
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-            System.out.println(loadCommand.generate());
             String loadData = driver.sendCommand(loadCommand);
             System.out.println(loadData);
-            Thread.sleep(1000);
+
+            Thread.sleep(15000);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {

@@ -1,6 +1,7 @@
 package xyz.supermoonie.wait;
 
 
+import xyz.supermoonie.command.AbstractCommand;
 import xyz.supermoonie.controller.WebViewDriver;
 import xyz.supermoonie.exception.WebViewClientException;
 import xyz.supermoonie.exception.WebViewConnectException;
@@ -57,6 +58,19 @@ public class Wait{
                 throw new WebViewClientException("time out");
             }
         } while (true);
+    }
+
+    /**
+     * 等待，直到达到某种条件
+     *
+     * @param command       首先执行的命令
+     * @param condition     期望达到的条件
+     * @param <V>           结果类型
+     * @return              结果
+     */
+    public <V> V until(AbstractCommand command, ExpectedCondition<V> condition) throws IOException {
+        driver.sendCommand(command);
+        return until(condition);
     }
 
 }

@@ -25,12 +25,11 @@ public class ExecCommandTest {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com/"));
             Wait wait = new Wait(driver);
-            Loop loop = new Loop(driver, wait);
-            Map<String, String> dataMap = loop.begin(loadCommand, ExpectedConditions.extractFinished("/VerifyImageServlet"));
-            String base64Img = dataMap.get("/VerifyImageServlet");
+
+            String base64Img = wait.until(new LoadCommand(new URL("https://persons.shgjj.com/")), ExpectedConditions.extractFinished("/VerifyImageServlet"));
             byte[] bytes = Base64.getDecoder().decode(base64Img);
+
             String account = JOptionPane.showInputDialog(null, "account");
             String password = JOptionPane.showInputDialog(null, "password");
             String captcha = (String) JOptionPane.showInputDialog(null, "captcha", "captcha", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(bytes), null, null);
@@ -39,12 +38,9 @@ public class ExecCommandTest {
                     "$('input[name=imagecode]').val('%s');" +
                     "login_submit(loginform);", account, password, captcha);
 
-            ExecCommand execCommand = new ExecCommand(js);
-            driver.sendCommand(execCommand);
             String mainServlet = Pattern.compile("/MainServlet\\?username=.+&password=.+&imagecode=.+&password_md5=.+&ID=0").toString();
-            System.out.println(mainServlet);
-            Map<String, String> map = wait.until(ExpectedConditions.extractFinished(mainServlet));
-            System.out.println(new String(Base64.getDecoder().decode(map.get(mainServlet)), "GBK"));
+            String result = wait.until(new ExecCommand(js), ExpectedConditions.extractFinished(mainServlet));
+            System.out.println(new String(Base64.getDecoder().decode(result), "GBK"));
 
             Thread.sleep(1500);
         } catch (IOException | InterruptedException e) {

@@ -3,8 +3,13 @@ package xyz.supermoonie.command;
 import xyz.supermoonie.controller.WebViewDriver;
 import org.junit.Test;
 import xyz.supermoonie.expection.ExpectedConditions;
+import xyz.supermoonie.parser.ScreenshotParser;
 import xyz.supermoonie.wait.Wait;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URL;
@@ -24,17 +29,17 @@ public class ScreenshotCommandTest {
                 driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
                 Wait wait = new Wait(driver);
 
-                LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-                String loadData = driver.sendCommand(loadCommand);
-                System.out.println(loadData);
-                wait.until(ExpectedConditions.loadFinished());
+                wait.until(new LoadCommand(new URL("https://persons.shgjj.com")), ExpectedConditions.loadFinished());
 
-                ScreenshotCommand screenshotCommand = new ScreenshotCommand("body");
-                String captchaData = driver.sendCommand(screenshotCommand);
-                System.out.println(captchaData);
+                ScreenshotCommand screenshotCommand = new ScreenshotCommand("html");
+                BufferedImage image = driver.sendCommand(screenshotCommand, new ScreenshotParser());
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                ImageIO.write(image, "PNG", outputStream);
+                byte[] bytes = outputStream.toByteArray();
+                JOptionPane.showMessageDialog(null, new ImageIcon(bytes), "image", JOptionPane.INFORMATION_MESSAGE);
 
                 Thread.sleep(1000);
-            } catch (IOException | InterruptedException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             } finally {
                 try {

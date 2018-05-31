@@ -2,6 +2,8 @@ package xyz.supermoonie.command;
 
 import xyz.supermoonie.controller.WebViewDriver;
 import org.junit.Test;
+import xyz.supermoonie.expection.ExpectedConditions;
+import xyz.supermoonie.wait.Wait;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -18,15 +20,8 @@ public class ProgressCommandTest {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-            System.out.println(loadCommand.generate());
-            String loadData = driver.sendCommand(loadCommand);
-            System.out.println(loadData);
-
-            ProgressCommand progressCommand = new ProgressCommand();
-            System.out.println(progressCommand.generate());
-            String progressData = driver.sendCommand(progressCommand);
-            System.out.println(progressData);
+            Wait wait = new Wait(driver);
+            wait.until(new LoadCommand(new URL("https://persons.shgjj.com")), ExpectedConditions.loadFinished());
 
             Thread.sleep(1000);
         } catch (IOException | InterruptedException e) {

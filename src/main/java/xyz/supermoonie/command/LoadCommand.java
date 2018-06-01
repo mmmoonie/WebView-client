@@ -29,11 +29,6 @@ public class LoadCommand extends AbstractCommand {
     private Pattern interceptor;
 
     /**
-     * 是否在load 之前清除 cookie
-     */
-    private Boolean clear = Boolean.FALSE;
-
-    /**
      * 代理，设置了 proxy 后，WebViewSpider 将使用此代理访问网络
      */
     private Proxy proxy;
@@ -42,22 +37,21 @@ public class LoadCommand extends AbstractCommand {
     }
 
     public LoadCommand(URL url) {
-        this(url, null, false, null);
+        this(url, null, null);
     }
 
     public LoadCommand(URL url, Proxy proxy) {
-        this(url, null, false, proxy);
+        this(url, null, proxy);
     }
 
     public LoadCommand(URL url, Pattern interceptor) {
-        this(url, interceptor, false, null);
+        this(url, interceptor, null);
     }
 
 
-    public LoadCommand(URL url, Pattern interceptor, Boolean clear, Proxy proxy) {
+    public LoadCommand(URL url, Pattern interceptor, Proxy proxy) {
         this.url = url;
         this.interceptor = interceptor;
-        this.clear = clear;
         this.proxy = proxy;
     }
 
@@ -109,13 +103,5 @@ public class LoadCommand extends AbstractCommand {
 
     public void setProxy(Proxy proxy) {
         this.proxy = proxy;
-    }
-
-    public Boolean getClear() {
-        return clear;
-    }
-
-    public void setClear(Boolean clear) {
-        this.clear = clear;
     }
 }

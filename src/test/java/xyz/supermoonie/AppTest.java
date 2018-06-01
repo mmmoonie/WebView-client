@@ -1,14 +1,10 @@
 package xyz.supermoonie;
 
 import org.junit.Test;
-import xyz.supermoonie.util.WebViewClientUtils;
 
-import java.awt.image.BufferedImage;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.regex.Pattern;
 
@@ -36,13 +32,6 @@ public class AppTest
 
     }
 
-    @Test
-    public void md5() throws NoSuchAlgorithmException, UnsupportedEncodingException {
-        MessageDigest md5 = MessageDigest.getInstance("MD5");
-        byte[] bytes = md5.digest("https://puser.zjzwfw.gov.cn/sso/usp.do?action=getLoginCode".getBytes("UTF-8"));
-
-        System.out.println(WebViewClientUtils.bytesToHexString(bytes));
-    }
 
     @Test
     public void regx() {

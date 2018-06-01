@@ -2,8 +2,6 @@ package xyz.supermoonie.command;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.regex.Pattern;
-
 /**
  * 执行 javaScript 代码命令，javaScript 代码分为两类：
  *      1、 无返回结果，此类 javaScript 代码主要是做填写表单，执行登录操作等。此时应设置 extractor 进行页面跳转的截取

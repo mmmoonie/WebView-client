@@ -39,4 +39,12 @@ public class AppTest
         System.out.println(text.matches("/MainServlet\\?username=\\S+&password=\\S+&imagecode=\\d+&password_md5=\\S+&ID=0"));
     }
 
+    @Test
+    public void string() {
+        String text = " hello world";
+        System.out.println(text.replaceAll("\\s", ""));
+        System.out.println(text.trim());
+        System.out.println(text);
+    }
+
 }

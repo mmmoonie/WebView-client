@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.Base64;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -26,7 +27,6 @@ public class ExecCommandTest {
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             Wait wait = new Wait(driver);
-
             String base64Img = wait.until(new LoadCommand(new URL("https://persons.shgjj.com/")), ExpectedConditions.extractFinished("/VerifyImageServlet"));
             byte[] bytes = Base64.getDecoder().decode(base64Img);
 

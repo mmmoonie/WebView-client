@@ -1,13 +1,12 @@
 package xyz.supermoonie.expection;
 
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import xyz.supermoonie.command.ExtractCommand;
 import xyz.supermoonie.command.GetCookieCommand;
 import xyz.supermoonie.command.ProgressCommand;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 常用的期望的条件的集合
@@ -43,35 +42,32 @@ public class ExpectedConditions {
         };
     }
 
-    public static ExpectedCondition<Map<String, String>> extractFinished(String... extractors) {
+    public static ExpectedCondition<List<String>> extractFinished(String extractor, int count) {
         return driver -> {
-            ExtractCommand extractCommand = new ExtractCommand(extractors);
+            ExtractCommand extractCommand = new ExtractCommand(extractor, count);
             String dataArrayText = driver.sendCommand(extractCommand);
             JSONArray dataArray = JSONArray.parseArray(dataArrayText);
             if (dataArray.size() == 0) {
                 return null;
             }
-            Map<String, String> dataMap = new HashMap<>(dataArray.size());
+            List<String> dataList = new ArrayList<>(dataArray.size());
             for (int i = 0; i < dataArray.size(); i ++) {
-                JSONObject json = dataArray.getJSONObject(i);
-                String key = json.keySet().iterator().next();
-                String base64Value = json.getString(key);
-                dataMap.put(key, base64Value);
+                String value = dataArray.getString(i);
+                dataList.add(value);
             }
-            return dataMap;
+            return dataList;
         };
     }
 
     public static ExpectedCondition<String> extractFinished(String extractor) {
         return driver -> {
-            ExtractCommand extractCommand = new ExtractCommand(extractor);
+            ExtractCommand extractCommand = new ExtractCommand(extractor, 1);
             String dataArrayText = driver.sendCommand(extractCommand);
             JSONArray dataArray = JSONArray.parseArray(dataArrayText);
             if (dataArray.size() == 0) {
                 return null;
             }
-            JSONObject json = dataArray.getJSONObject(0);
-            return json.getString(extractor);
+            return dataArray.getString(0);
         };
     }
 

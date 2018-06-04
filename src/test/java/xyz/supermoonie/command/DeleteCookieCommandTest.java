@@ -20,7 +20,7 @@ public class DeleteCookieCommandTest {
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             Wait wait = new Wait(driver);
-            wait.until(new LoadCommand(new URL("https://persons.shgjj.com")), ExpectedConditions.loadFinished());
+            wait.until(new LoadCommand(new URL("https://housing.ccb.com/tran/WCCMainPlatV5?CCB_IBSVersion=V5&isAjaxRequest=true&SERVLET_NAME=WCCMainPlatV5&TXCODE=NGJJ11&InsID=520109301001&Br_No=520000000")), ExpectedConditions.loadFinished());
 
             DeleteCookieCommand deleteCookieCommand = new DeleteCookieCommand();
             driver.sendCommand(deleteCookieCommand);

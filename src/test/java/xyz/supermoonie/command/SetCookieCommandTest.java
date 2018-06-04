@@ -4,11 +4,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import xyz.supermoonie.controller.WebViewDriver;
 import org.junit.Test;
+import xyz.supermoonie.expection.ExpectedConditions;
+import xyz.supermoonie.parser.GetCookieParser;
+import xyz.supermoonie.wait.Wait;
 
 import java.io.IOException;
 import java.net.HttpCookie;
 import java.net.InetSocketAddress;
 import java.net.URL;
+import java.util.List;
 
 /**
  *
@@ -17,65 +21,46 @@ import java.net.URL;
 public class SetCookieCommandTest {
 
     @Test
-    public void setCookie() {
+    public void setCookie() throws Exception {
         try {
             WebViewDriver driver = null;
-            HttpCookie[] cookies = null;
-//            try {
-//                driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-//                LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-//                String loadData = driver.sendCommand(loadCommand);
-//                System.out.println(loadData);
-//
-//                String cookieData = driver.sendCommand(new GetCookieCommand());
-//                JSONArray cookieArray = JSONArray.parseArray(cookieData);
-//                cookies = new HttpCookie[cookieArray.size()];
-//                for (int i = 0; i < cookieArray.size(); i ++) {
-//                    JSONObject cookieJson = cookieArray.getJSONObject(i);
-//                    String name = cookieJson.getString("name");
-//                    String value = cookieJson.getString("value");
-//                    HttpCookie cookie = new HttpCookie(name, value);
-//                    cookies[i] = cookie;
-//                }
-//            } finally {
-//                try {
-//                    if (driver != null) {
-//                        driver.close();
-//                    }
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-            WebViewDriver webViewDriver = null;
+            List<HttpCookie> cookies;
             try {
-                webViewDriver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-//                LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-//                String loadData = webViewDriver.sendCommand(loadCommand);
-//                System.out.println(loadData);
-                cookies = new HttpCookie[1];
-                HttpCookie cookie = new HttpCookie("hello", "world");
-                cookie.setDomain("persons.shgjj.com");
-                cookie.setPath("/");
-                cookie.setMaxAge(0);
-                cookie.setHttpOnly(false);
-                cookie.setSecure(false);
-                cookies[0] = cookie;
-                SetCookieCommand setCookieCommand = new SetCookieCommand(cookies);
-                String setCookieData = webViewDriver.sendCommand(setCookieCommand);
-                System.out.println(setCookieData);
-
-                String cookieData = webViewDriver.sendCommand(new GetCookieCommand());
-                System.out.println(cookieData);
-
+                driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
+                Wait wait = new Wait(driver);
+                LoadCommand loadCommand = new LoadCommand(new URL("https://housing.ccb.com/tran/WCCMainPlatV5?CCB_IBSVersion=V5&isAjaxRequest=true&SERVLET_NAME=WCCMainPlatV5&TXCODE=NGJJ11&InsID=520109301001&Br_No=520000000"));
+                wait.until(loadCommand, ExpectedConditions.loadFinished());
+                cookies = driver.sendCommand(new GetCookieCommand(), new GetCookieParser());
+                System.out.println(cookies);
+                driver.sendCommand(new DeleteCookieCommand());
+                wait.until(loadCommand, ExpectedConditions.loadFinished());
+                List<HttpCookie> cookieList = driver.sendCommand(new GetCookieCommand(), new GetCookieParser());
+                System.out.println(cookieList);
+                driver.sendCommand(new DeleteCookieCommand());
+                HttpCookie[] httpCookies = new HttpCookie[cookies.size() + 1];
+                HttpCookie httpCookie = new HttpCookie("hello", "world");
+                httpCookie.setDomain("housing.ccb.com");
+                httpCookie.setPath("/");
+                httpCookie.setMaxAge(0);
+                httpCookie.setHttpOnly(false);
+                httpCookie.setSecure(false);
+                httpCookies[0] = httpCookie;
+                for (int i = 1; i < cookies.size() + 1; i ++) {
+                    httpCookies[i] = cookies.get(i - 1);
+                }
+                driver.sendCommand(new SetCookieCommand(httpCookies));
+                cookieList = driver.sendCommand(new GetCookieCommand(), new GetCookieParser());
+                System.out.println(cookieList);
             } finally {
                 try {
-                    if (webViewDriver != null) {
-                        webViewDriver.close();
+                    if (driver != null) {
+                        driver.close();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

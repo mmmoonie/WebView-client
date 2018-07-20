@@ -73,4 +73,23 @@ public class Wait{
         return until(condition);
     }
 
+    public int getTimeOut() {
+        return timeOut;
+    }
+
+    public void setTimeOut(int timeOut) {
+        this.timeOut = timeOut;
+    }
+
+    public int getInterval() {
+        return interval;
+    }
+
+    public void setInterval(int interval) {
+        this.interval = interval;
+    }
+
+    public WebViewDriver getDriver() {
+        return driver;
+    }
 }

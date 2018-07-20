@@ -67,4 +67,24 @@ public class Loop {
         }
         throw new WebViewClientException(retryTimes + " times has been used, but no result return");
     }
+
+    public WebViewDriver getDriver() {
+        return driver;
+    }
+
+    public Wait getWait() {
+        return wait;
+    }
+
+    public void setWait(Wait wait) {
+        this.wait = wait;
+    }
+
+    public int getRetryTimes() {
+        return retryTimes;
+    }
+
+    public void setRetryTimes(int retryTimes) {
+        this.retryTimes = retryTimes;
+    }
 }

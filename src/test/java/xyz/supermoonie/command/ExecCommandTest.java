@@ -22,6 +22,30 @@ import java.util.regex.Pattern;
 public class ExecCommandTest {
 
     @Test
+    public void encode() {
+        WebViewDriver driver = null;
+        try {
+            driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
+            Wait wait = new Wait(driver);
+            wait.until(new LoadCommand(new URL("https://gzgjj.gov.cn/wsywgr/login.jsp")), ExpectedConditions.loadFinished());
+            driver.sendCommand(new ExecCommand("changeCert(2);"));
+            driver.sendCommand(new ExecCommand("form1.name.value='余丽娥';"));
+
+            Thread.sleep(1500);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (driver != null) {
+                    driver.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Test
     public void exec() {
         WebViewDriver driver = null;
         try {

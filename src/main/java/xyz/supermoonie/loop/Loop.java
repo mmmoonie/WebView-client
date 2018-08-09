@@ -31,12 +31,12 @@ public class Loop {
      */
     private int retryTimes;
 
-    public Loop(WebViewDriver driver, Wait wait) {
-        this(driver, wait, 3);
+    public Loop(Wait wait) {
+        this(wait, 3);
     }
 
-    public Loop(WebViewDriver driver, Wait wait, int retryTimes) {
-        this.driver = driver;
+    public Loop(Wait wait, int retryTimes) {
+        this.driver = wait.getDriver();
         this.wait = wait;
         this.retryTimes = retryTimes;
     }

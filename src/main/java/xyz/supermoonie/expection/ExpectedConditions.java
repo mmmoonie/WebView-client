@@ -2,7 +2,7 @@ package xyz.supermoonie.expection;
 
 import com.alibaba.fastjson.JSONArray;
 import xyz.supermoonie.command.ExtractCommand;
-import xyz.supermoonie.command.GetCookieCommand;
+import xyz.supermoonie.command.GetAllCookieCommand;
 import xyz.supermoonie.command.ProgressCommand;
 
 import java.util.ArrayList;
@@ -34,7 +34,7 @@ public class ExpectedConditions {
 
     public static ExpectedCondition<JSONArray> cookieLoaded(final String key) {
         return driver -> {
-            String cookieData = driver.sendCommand(new GetCookieCommand());
+            String cookieData = driver.sendCommand(new GetAllCookieCommand());
             if (cookieData.contains(key)) {
                 return JSONArray.parseArray(cookieData);
             }

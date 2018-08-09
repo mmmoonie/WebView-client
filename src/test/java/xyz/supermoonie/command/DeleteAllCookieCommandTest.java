@@ -12,7 +12,7 @@ import java.net.InetSocketAddress;
 import java.net.URL;
 import java.util.List;
 
-public class DeleteCookieCommandTest {
+public class DeleteAllCookieCommandTest {
 
     @Test
     public void deleteCookie() {
@@ -22,11 +22,11 @@ public class DeleteCookieCommandTest {
             Wait wait = new Wait(driver);
             wait.until(new LoadCommand(new URL("https://housing.ccb.com/tran/WCCMainPlatV5?CCB_IBSVersion=V5&isAjaxRequest=true&SERVLET_NAME=WCCMainPlatV5&TXCODE=NGJJ11&InsID=520109301001&Br_No=520000000")), ExpectedConditions.loadFinished());
 
-            DeleteCookieCommand deleteCookieCommand = new DeleteCookieCommand();
-            driver.sendCommand(deleteCookieCommand);
+            DeleteAllCookieCommand deleteAllCookieCommand = new DeleteAllCookieCommand();
+            driver.sendCommand(deleteAllCookieCommand);
 
-            GetCookieCommand getCookieCommand = new GetCookieCommand();
-            List<HttpCookie> cookieList = driver.sendCommand(getCookieCommand, new GetCookieParser());
+            GetAllCookieCommand getAllCookieCommand = new GetAllCookieCommand();
+            List<HttpCookie> cookieList = driver.sendCommand(getAllCookieCommand, new GetCookieParser());
 
             System.out.println(cookieList);
 

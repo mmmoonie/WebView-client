@@ -16,7 +16,7 @@ import java.util.List;
  *
  * Created by wangchao on 2018/4/19.
  */
-public class GetCookieCommandTest {
+public class GetAllCookieCommandTest {
 
     @Test
     public void getCookie() {
@@ -27,7 +27,7 @@ public class GetCookieCommandTest {
 
             wait.until(new LoadCommand(new URL("https://housing.ccb.com/tran/WCCMainPlatV5?CCB_IBSVersion=V5&isAjaxRequest=true&SERVLET_NAME=WCCMainPlatV5&TXCODE=NGJJ11&InsID=520109301001&Br_No=520000000")), ExpectedConditions.loadFinished());
 
-            List<HttpCookie> cookieList = driver.sendCommand(new GetCookieCommand(), new GetCookieParser());
+            List<HttpCookie> cookieList = driver.sendCommand(new GetAllCookieCommand(), new GetCookieParser());
             System.out.println(cookieList);
 
             Thread.sleep(1000);

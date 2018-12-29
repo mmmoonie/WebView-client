@@ -24,11 +24,12 @@ public class LoadCommandTest {
         WebViewDriver driver = null;
         try {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
-            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
-            String loadData = driver.sendCommand(loadCommand);
+            LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"), LoadCommand.IMAGE_INTERCEPTOR);
+            driver.write(loadCommand);
+            String loadData = driver.read();
             System.out.println(loadData);
 
-            Thread.sleep(15000);
+            Thread.sleep(1000);
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         } finally {

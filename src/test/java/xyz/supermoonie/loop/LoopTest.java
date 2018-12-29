@@ -22,7 +22,7 @@ public class LoopTest {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             LoadCommand loadCommand = new LoadCommand(new URL("https://persons.shgjj.com"));
 
-            Boolean loaded = new Loop(driver, new Wait(driver)).begin(loadCommand, ExpectedConditions.loadFinished());
+            Boolean loaded = new Loop(new Wait(driver)).begin(loadCommand, ExpectedConditions.loadFinished());
             System.out.println(loaded);
 
             Thread.sleep(1000);

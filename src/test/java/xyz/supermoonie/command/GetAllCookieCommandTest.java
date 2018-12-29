@@ -1,5 +1,6 @@
 package xyz.supermoonie.command;
 
+import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 import xyz.supermoonie.controller.WebViewDriver;
 import xyz.supermoonie.expection.ExpectedConditions;
@@ -25,10 +26,10 @@ public class GetAllCookieCommandTest {
             driver = new WebViewDriver(new InetSocketAddress("127.0.0.1", 7100));
             Wait wait = new Wait(driver);
 
-            wait.until(new LoadCommand(new URL("https://housing.ccb.com/tran/WCCMainPlatV5?CCB_IBSVersion=V5&isAjaxRequest=true&SERVLET_NAME=WCCMainPlatV5&TXCODE=NGJJ11&InsID=520109301001&Br_No=520000000")), ExpectedConditions.loadFinished());
+//            wait.until(new LoadCommand(new URL("https://housing.ccb.com/tran/WCCMainPlatV5?CCB_IBSVersion=V5&isAjaxRequest=true&SERVLET_NAME=WCCMainPlatV5&TXCODE=NGJJ11&InsID=520109301001&Br_No=520000000")), ExpectedConditions.loadFinished());
 
             List<HttpCookie> cookieList = driver.sendCommand(new GetAllCookieCommand(), new GetCookieParser());
-            System.out.println(cookieList);
+            System.out.println(JSONObject.toJSONString(cookieList));
 
             Thread.sleep(1000);
         } catch (Exception e) {

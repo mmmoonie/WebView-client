@@ -46,7 +46,7 @@ public class WebViewDriver implements Closeable{
     }
 
     public String read() throws IOException {
-        StringBuilder stringBuilder = new StringBuilder("");
+        StringBuilder stringBuilder = new StringBuilder();
         String info;
         while ((info = reader.readLine()) != null) {
             if (info.trim().equals(BOUNDARY)) {
